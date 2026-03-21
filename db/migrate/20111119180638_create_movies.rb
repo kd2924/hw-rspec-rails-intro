@@ -1,5 +1,5 @@
-class CreateMovies < ActiveRecord::Migration
-  def up
+class CreateMovies < ActiveRecord::Migration[Rails.version.to_f]
+def up
     create_table :movies do |t|
       t.string :title
       t.string :rating

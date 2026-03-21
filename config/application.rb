@@ -1,13 +1,8 @@
 require File.expand_path('boot', __dir__)
 
-# # Pick the frameworks you want:
-# require "active_record/railtie"
-# require "action_controller/railtie"
-# require "action_mailer/railtie"
-# require "active_resource/railtie"
-# require "sprockets/railtie"
-# require "rails/test_unit/railtie"
+# Only require the frameworks we need (skip Active Storage, Action Mailbox, etc.)
 require "rails/all"
+require "sprockets/railtie"
 
 Bundler.require(:default, Rails.env)
 
@@ -45,10 +40,9 @@ module Rottenpotatoes
     # config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    # config.assets.version = '1.0'
 
     # Enable escaping HTML in JSON.
-
     config.active_support.escape_html_entities_in_json = true
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
@@ -64,5 +58,7 @@ module Rottenpotatoes
 
     # Fix for Heroku deploy
     config.assets.initialize_on_precompile = false
+
+    config.active_support.cache_format_version = 7.1
   end
 end
