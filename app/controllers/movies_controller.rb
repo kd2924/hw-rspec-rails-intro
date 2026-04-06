@@ -27,6 +27,10 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def search_tmdb
+    @movies = Movie.find_in_tmdb(params[:search_terms])
+  end
+
   def edit
     @movie = Movie.find params[:id]
   end

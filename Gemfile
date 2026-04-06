@@ -31,3 +31,4 @@ end
 
 # Required for timezone support on Linux (Gradescope)
 gem 'tzinfo-data'
+gem "webmock"
