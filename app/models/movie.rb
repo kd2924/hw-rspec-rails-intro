@@ -23,6 +23,7 @@ class Movie < ApplicationRecord
     return [] if options[:title].blank?
 
     response = Faraday.get(TMDB_ENDPOINT, build_query_params(options))
+    return [] if response.nil?
     payload = parse_tmdb_payload!(response)
 
     Array(payload['results']).map do |movie|
