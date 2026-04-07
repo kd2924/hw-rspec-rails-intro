@@ -7,22 +7,25 @@
 
 <div class="search-container">
 <%# Part 1 here %>
-<%= form_tag search_path, method: :get do %>
-    <label for="searchMovieName">Movie Name</label>
-    <%= text_field_tag 'movie_title', params[:movie_title], class: "form-control", placeholder: "Manhunter", id: "movie_title_field"%> 
-    <label for="searchReleaseDateField">Release Year</label>
-    <%= text_field_tag 'movie_year', params[:movie_year], class: "form-control", id: "movie_year_field", placeholder: "1986" %>
-  
-  <div class="form-check">
-    <%= radio_button_tag 'language', 'en', false, class: "form-check-input" %>
-    <label class="form-check-label" for="language_en">English Only</label>
-  </div>
+ <%= form_tag search_path, method: :get do %>
+    
+    <label for="movie_title_field">Movie Name</label>
+    <%= text_field_tag 'movie_title', params[:movie_title], id: "movie_title_field" %> 
 
-  <div class="form-check">
-    <%= radio_button_tag 'language', 'all', true, class: "form-check-input" %>
-    <label class="form-check-label" for="language_all">All Languages</label>
-  </div>
-  <%= submit_tag 'Search', id: 'tmdb_submit', class: 'btn btn-warning col-2' %>
-  
-<% end %>
+    <label for="movie_year_field">Release Year</label>
+    <%= text_field_tag 'movie_year', params[:movie_year], id: "movie_year_field" %>
+
+    <div>
+      <%= radio_button_tag 'language', 'en', false, id: 'language_en' %>
+      <label for="language_en">English Only</label>
+    </div>
+
+    <div>
+      <%= radio_button_tag 'language', 'all', true, id: 'language_all' %>
+      <label for="language_all">All Languages</label>
+    </div>
+
+    <%= submit_tag 'Search', id: 'tmdb_submit' %>
+
+  <% end %>
 </div>
