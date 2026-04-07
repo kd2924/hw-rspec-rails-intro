@@ -7,7 +7,7 @@
 
 <div class="search-container">
 <%# Part 1 here %>
- <%= form_tag search_path, method: :get do %>
+<%= form_tag search_path do %>
     
     <label for="movie_title_field">Movie Name</label>
     <%= text_field_tag 'movie_title', params[:movie_title], id: "movie_title_field" %> 
@@ -25,7 +25,7 @@
       <label for="language_all">All Languages</label>
     </div>
 
-    <%= submit_tag 'Search', id: 'tmdb_submit' %>
+    <%= button_tag 'Search', id: 'tmdb_submit' %>
 
   <% end %>
 </div>
