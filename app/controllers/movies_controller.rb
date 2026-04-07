@@ -28,8 +28,17 @@ class MoviesController < ApplicationController
   end
 
   def search_tmdb
-    @movies = Movie.find_in_tmdb(params[:search_terms])
+  @movies = []
+  if params[:movie_title].blank?
+    flash.now[:warning] = "Please enter a movie title"
+    return
   end
+  search_terms = { title: params[:movie_title], year: params[:movie_year] }
+  @movies = Movie.find_in_tmdb(search_terms)
+  if @movies.blank?
+    flash.now[:warning] = "No movies found"
+  end
+end
 
   def edit
     @movie = Movie.find params[:id]

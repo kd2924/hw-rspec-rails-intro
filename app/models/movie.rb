@@ -1,5 +1,5 @@
 require 'json'
-require 'cgi'
+
 
 class Movie < ApplicationRecord
   def self.all_ratings
