@@ -1,3 +1,4 @@
+#checking deploy
 Rottenpotatoes::Application.routes.draw do
   get 'search', to: 'movies#search_tmdb'
   post 'search', to: 'movies#search_tmdb'
