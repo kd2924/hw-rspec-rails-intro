@@ -7,7 +7,7 @@
 
 <div class="search-container">
 <%# Part 1 here %>
-<%= form_tag <%# fill in here #%> do %>
+<%= form_tag search_path, method: :get do%>%
     <label for="searchMovieName">Movie Name</label>
     <%= text_field_tag 'title', nil, class: "form-control", id: "movie_title_field", placeholder: "Manhunter", id: "movie_title_field"%> 
     <label for="searchReleaseDateField">Release Year</label>
