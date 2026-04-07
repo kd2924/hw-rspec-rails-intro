@@ -28,17 +28,17 @@ class MoviesController < ApplicationController
   end
 
   def search_tmdb
-  @movies = []
-  if params[:movie_title].blank?
-    flash.now[:warning] = "Please enter a movie title"
-    return
+    @movies = []
+    search_terms = build_search_terms
+
+    if search_terms.blank?
+      flash.now[:warning] = 'Please enter a movie title'
+      render :search_tmdb and return
+    end
+
+    @movies = Movie.find_in_tmdb(search_terms)
+    flash.now[:warning] = 'No movies found' if @movies.blank?
   end
-  search_terms = { title: params[:movie_title], year: params[:movie_year] }
-  @movies = Movie.find_in_tmdb(search_terms)
-  if @movies.blank?
-    flash.now[:warning] = "No movies found"
-  end
-end
 
   def edit
     @movie = Movie.find params[:id]
@@ -61,8 +61,28 @@ end
   private
 
     def movie_params
-  params.require(:movie).permit(:title, :rating, :description, :release_date)
-end
+      params.require(:movie).permit(:title, :rating, :description, :release_date)
+    end
+
+    def build_search_terms
+      term_from_params = params[:search_terms].presence
+      explicit_filters = params[:movie_year].present? || params[:language].present?
+
+      return structured_search_terms if term_from_params.blank?
+      return term_from_params unless explicit_filters
+
+      structured_search_terms(term_from_params)
+    end
+
+    def structured_search_terms(title = nil)
+      title ||= params[:movie_title].presence
+      return if title.blank?
+
+      terms = { title: title }
+      terms[:year] = params[:movie_year].presence if params[:movie_year].present?
+      terms[:language] = params[:language].presence if params[:language].present?
+      terms
+    end
 
   def force_index_redirect
     return unless !params.key?(:ratings) || !params.key?(:sort_by)

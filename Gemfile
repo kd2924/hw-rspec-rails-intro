@@ -4,6 +4,7 @@ gem 'rails', '~> 7.1.5'
 gem 'sprockets-rails'
 gem 'faraday'
 gem 'jquery-rails'
+gem 'puma'
 
 # for Heroku deployment - as described in Ap. A of ELLS book
 group :development, :test do
@@ -16,8 +17,11 @@ group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '>= 1.4'
   gem 'webmock'
-  gem 'web-console'
   gem 'simplecov'
+end
+
+group :development do
+  gem 'web-console'
 end
 
 group :test do
@@ -31,4 +35,3 @@ end
 
 # Required for timezone support on Linux (Gradescope)
 gem 'tzinfo-data'
-gem 'puma'
