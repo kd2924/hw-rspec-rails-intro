@@ -13,9 +13,9 @@
 <% end %>
 
 <div class="search-container">
-  <%= form_with url: search_path, method: :get, local: true, html: { id: 'search_form' } do %>
-    <label for="search_terms_field">Movie Title</label>
-    <%= text_field_tag :search_terms, params[:search_terms], id: 'search_terms_field' %>
+  <%= form_with url: search_path, method: :get, local: true, html: { id: 'tmdb_form' } do %>
+    <label for="movie_title_field">Movie Title</label>
+    <%= text_field_tag :search_terms, params[:search_terms], id: 'movie_title_field' %>
 
     <label for="movie_year_field">Release Year</label>
     <%= text_field_tag :movie_year, params[:movie_year], id: 'movie_year_field' %>
