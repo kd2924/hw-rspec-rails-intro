@@ -13,7 +13,7 @@
 <% end %>
 
 <div class="search-container">
-  <%= form_with url: search_path, method: :get, local: true, html: { id: 'tmdb_form' } do %>
+ <%= form_with url: search_path, method: :get, local: true, html: { id: 'tmdb_form' } do %>
     <label for="movie_title_field">Movie Title</label>
     <%= text_field_tag :search_terms, params[:search_terms], id: 'movie_title_field' %>
 
