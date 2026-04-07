@@ -1,6 +1,5 @@
 require 'json'
 
-
 class Movie < ApplicationRecord
   def self.all_ratings
     %w[G PG PG-13 R]
@@ -14,15 +13,33 @@ class Movie < ApplicationRecord
     end
   end
   
+require 'json'
+
 def self.find_in_tmdb(search_terms)
   api_key = ENV['TMDB_API_KEY'] || 'dummy_key'
 
-  title = CGI.escape(search_terms[:title].to_s)
-  language = search_terms[:language]
+  title = search_terms[:title]
+  year = search_terms[:year]
 
-  url = "https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&query=#{title}&language=#{language}"
+  url = "https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&query=#{title}"
+  url += "&year=#{year}" unless year.blank?
 
-  Faraday.get(url)
+  response = Faraday.get(url)
+
+  data = JSON.parse(response.body)
+
+  results = data["results"] || []
+
+ 
+  movies = results.map do |movie|
+    {
+      title: movie["title"],
+      release_date: movie["release_date"],
+      rating: "R"   
+    }
+  end
+
+  movies
 end
 
 
