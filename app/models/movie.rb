@@ -2,6 +2,8 @@ require 'json'
 require 'faraday'
 
 class Movie < ApplicationRecord
+  class TMDBError < StandardError; end
+
   TMDB_ENDPOINT = 'https://api.themoviedb.org/3/search/movie'.freeze
 
   def self.all_ratings
@@ -21,20 +23,19 @@ class Movie < ApplicationRecord
     return [] if options[:title].blank?
 
     response = Faraday.get(TMDB_ENDPOINT, build_query_params(options))
-    body = response&.body.to_s
-    payload = body.empty? ? {} : JSON.parse(body)
+    payload = parse_tmdb_payload!(response)
 
     Array(payload['results']).map do |movie|
       {
         title: movie['title'],
         release_date: movie['release_date'],
-        overview: movie['overview'],
+        description: movie['overview'],
         tmdb_id: movie['id'],
-        rating: movie['vote_average']
+        rating: 'R'
       }
     end
-  rescue JSON::ParserError
-    []
+  rescue Faraday::Error => e
+    raise TMDBError, "TMDb request failed: #{e.message}"
   end
 
   def self.normalize_search_terms(search_terms)
@@ -68,4 +69,21 @@ class Movie < ApplicationRecord
     params
   end
   private_class_method :build_query_params
+
+  def self.parse_tmdb_payload!(response)
+    raise TMDBError, 'TMDb request failed with no response.' if response.nil?
+
+    body = response.body.to_s
+    payload = body.empty? ? {} : JSON.parse(body)
+
+    if response.status.to_i >= 400 || payload['success'] == false
+      message = payload['status_message'].presence || "TMDb request failed with status #{response.status}"
+      raise TMDBError, message
+    end
+
+    payload
+  rescue JSON::ParserError
+    raise TMDBError, 'TMDb returned an invalid response. Please try again later.'
+  end
+  private_class_method :parse_tmdb_payload!
 end

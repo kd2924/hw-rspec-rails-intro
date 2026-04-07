@@ -38,6 +38,20 @@ class MoviesController < ApplicationController
 
     @movies = Movie.find_in_tmdb(search_terms)
     flash.now[:warning] = 'No movies found' if @movies.blank?
+  rescue Movie::TMDBError => e
+    Rails.logger.warn("TMDb error: #{e.message}")
+    flash.now[:warning] = e.message
+    @movies = []
+    render :search_tmdb
+  end
+
+  def add_movie
+    movie = Movie.create!(movie_params)
+    flash[:notice] = "#{movie.title} was successfully added to RottenPotatoes."
+    redirect_to search_path
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:warning] = e.message
+    redirect_to search_path
   end
 
   def edit

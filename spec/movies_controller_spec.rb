@@ -21,4 +21,15 @@ describe MoviesController, type: :controller do
   expect(assigns(:movies)).to eq(@fake_results)
     end
   end
+
+  describe 'adding a TMDb movie' do
+    it 'creates the movie and redirects back to search' do
+      expect do
+        post :add_movie, params: { movie: { title: 'Aladdin', rating: 'G', description: 'Magic', release_date: '1992-11-25' } }
+      end.to change(Movie, :count).by(1)
+
+      expect(response).to redirect_to(search_path)
+      expect(flash[:notice]).to include('Aladdin')
+    end
+  end
 end
