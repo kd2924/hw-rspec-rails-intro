@@ -1,5 +1,5 @@
 Rottenpotatoes::Application.routes.draw do
-  get 'search_tmdb', to: 'movies#search_tmdb'
+  get 'search', to: 'movies#search_tmdb'
   post 'search', to: 'movies#search_tmdb'
   resources :movies
   # map '/' to be a redirect to '/movies'
